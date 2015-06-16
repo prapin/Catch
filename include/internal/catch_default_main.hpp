@@ -12,6 +12,10 @@
 
 // Standard C/C++ main entry point
 int main (int argc, char * const argv[]) {
+#ifdef _MSC_VER
+    _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_ALLOC_MEM_DF);
+    _crtBreakAlloc = -1; // If memory leak is detected, set here the allocation memory block to break on allocation
+#endif
     return Catch::Session().run( argc, argv );
 }
 
