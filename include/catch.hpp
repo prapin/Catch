@@ -39,6 +39,7 @@
 #include "internal/catch_matchers.hpp"
 #include "internal/catch_compiler_capabilities.h"
 #include "internal/catch_interfaces_tag_alias_registry.h"
+#include "internal/catch_expecting_throws.hpp" // prapin
 
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections
