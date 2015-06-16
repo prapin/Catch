@@ -25,7 +25,7 @@ namespace Catch {
             m_currentIndex( 0 )
         {}
 
-        bool moveNext() {
+        bool moveNext() override {
             if( ++m_currentIndex == m_size ) {
                 m_currentIndex = 0;
                 return false;
@@ -33,7 +33,7 @@ namespace Catch {
             return true;
         }
 
-        std::size_t getCurrentIndex() const {
+        std::size_t getCurrentIndex() const override {
             return m_currentIndex;
         }
 
@@ -50,7 +50,7 @@ namespace Catch {
             deleteAll( m_generatorsInOrder );
         }
 
-        IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) {
+        IGeneratorInfo& getGeneratorInfo( std::string const& fileInfo, std::size_t size ) override {
             std::map<std::string, IGeneratorInfo*>::const_iterator it = m_generatorsByName.find( fileInfo );
             if( it == m_generatorsByName.end() ) {
                 IGeneratorInfo* info = new GeneratorInfo( size );
@@ -61,7 +61,7 @@ namespace Catch {
             return *it->second;
         }
 
-        bool moveNext() {
+        bool moveNext() override {
             std::vector<IGeneratorInfo*>::const_iterator it = m_generatorsInOrder.begin();
             std::vector<IGeneratorInfo*>::const_iterator itEnd = m_generatorsInOrder.end();
             for(; it != itEnd; ++it ) {

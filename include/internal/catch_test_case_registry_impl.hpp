@@ -59,7 +59,7 @@ namespace Catch {
             }
         }
 
-        virtual std::vector<TestCase> const& getAllTests() const {
+        virtual std::vector<TestCase> const& getAllTests() const override {
             return m_functionsInOrder;
         }
 
@@ -67,7 +67,7 @@ namespace Catch {
             return m_nonHiddenFunctions;
         }
 
-        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const {
+        virtual void getFilteredTests( TestSpec const& testSpec, IConfig const& config, std::vector<TestCase>& matchingTestCases, bool negated = false ) const override {
 
             for( std::vector<TestCase>::const_iterator  it = m_functionsInOrder.begin(),
                                                         itEnd = m_functionsInOrder.end();
@@ -112,7 +112,7 @@ namespace Catch {
 
         FreeFunctionTestCase( TestFunction fun ) : m_fun( fun ) {}
 
-        virtual void invoke() const {
+        virtual void invoke() const override {
             m_fun();
         }
 

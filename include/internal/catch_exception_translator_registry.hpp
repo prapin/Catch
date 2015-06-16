@@ -27,7 +27,7 @@ namespace Catch {
             m_translators.push_back( translator );
         }
 
-        virtual std::string translateActiveException() const {
+        virtual std::string translateActiveException() const override {
             try {
 #ifdef __OBJC__
                 // In Objective-C try objective-c exceptions first

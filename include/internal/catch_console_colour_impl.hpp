@@ -19,7 +19,7 @@ namespace Catch {
         };
 
         struct NoColourImpl : IColourImpl {
-            void use( Colour::Code ) {}
+            void use( Colour::Code ) override {}
 
             static IColourImpl* instance() {
                 static NoColourImpl s_instance;
@@ -112,7 +112,7 @@ namespace {
     // https://github.com/philsquared/Catch/pull/131
     class PosixColourImpl : public IColourImpl {
     public:
-        virtual void use( Colour::Code _colourCode ) {
+        virtual void use( Colour::Code _colourCode ) override {
             switch( _colourCode ) {
                 case Colour::None:
                 case Colour::White:     return setColour( "[0m" );

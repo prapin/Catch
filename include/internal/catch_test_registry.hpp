@@ -20,7 +20,7 @@ class MethodTestCase : public SharedImpl<ITestCase> {
 public:
     MethodTestCase( void (C::*method)() ) : m_method( method ) {}
 
-    virtual void invoke() const {
+    virtual void invoke() const override {
         C obj;
         (obj.*m_method)();
     }

@@ -118,7 +118,7 @@ namespace Catch {
 
         std::string getProcessName() const { return m_data.processName; }
 
-        bool shouldDebugBreak() const { return m_data.shouldDebugBreak; }
+        bool shouldDebugBreak() const override { return m_data.shouldDebugBreak; }
 
         void setStreamBuf( std::streambuf* buf ) {
             m_os.rdbuf( buf ? buf : Catch::cout().rdbuf() );
@@ -133,23 +133,23 @@ namespace Catch {
 
         std::string getReporterName() const { return m_data.reporterName; }
 
-        int abortAfter() const { return m_data.abortAfter; }
+        int abortAfter() const override { return m_data.abortAfter; }
 
-        TestSpec const& testSpec() const { return m_testSpec; }
+        TestSpec const& testSpec() const override { return m_testSpec; }
 
         bool showHelp() const { return m_data.showHelp; }
-        bool showInvisibles() const { return m_data.showInvisibles; }
+        bool showInvisibles() const override { return m_data.showInvisibles; }
 
         // IConfig interface
-        virtual bool allowThrows() const        { return !m_data.noThrow; }
-        virtual std::ostream& stream() const    { return m_os; }
-        virtual std::string name() const        { return m_data.name.empty() ? m_data.processName : m_data.name; }
-        virtual bool includeSuccessfulResults() const   { return m_data.showSuccessfulTests; }
-        virtual bool warnAboutMissingAssertions() const { return m_data.warnings & WarnAbout::NoAssertions; }
-        virtual ShowDurations::OrNot showDurations() const { return m_data.showDurations; }
-        virtual RunTests::InWhatOrder runOrder() const  { return m_data.runOrder; }
-        virtual unsigned int rngSeed() const    { return m_data.rngSeed; }
-        virtual bool forceColour() const { return m_data.forceColour; }
+        virtual bool allowThrows() const override     { return !m_data.noThrow; }
+        virtual std::ostream& stream() const override { return m_os; }
+        virtual std::string name() const override     { return m_data.name.empty() ? m_data.processName : m_data.name; }
+        virtual bool includeSuccessfulResults() const override { return m_data.showSuccessfulTests; }
+        virtual bool warnAboutMissingAssertions() const override { return m_data.warnings & WarnAbout::NoAssertions; }
+        virtual ShowDurations::OrNot showDurations() const override { return m_data.showDurations; }
+        virtual RunTests::InWhatOrder runOrder() const override { return m_data.runOrder; }
+        virtual unsigned int rngSeed() const override { return m_data.rngSeed; }
+        virtual bool forceColour() const override { return m_data.forceColour; }
 
     private:
         ConfigData m_data;

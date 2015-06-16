@@ -21,7 +21,7 @@ namespace Catch {
 
         virtual ~NotImplementedException() CATCH_NOEXCEPT {}
 
-        virtual const char* what() const CATCH_NOEXCEPT;
+        virtual const char* what() const CATCH_NOEXCEPT override;
 
     private:
         std::string m_what;

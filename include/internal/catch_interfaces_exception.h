@@ -35,7 +35,7 @@ namespace Catch {
             : m_translateFunction( translateFunction )
             {}
 
-            virtual std::string translate() const {
+            virtual std::string translate() const override {
                 try {
                     throw;
                 }

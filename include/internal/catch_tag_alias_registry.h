@@ -17,8 +17,8 @@ namespace Catch {
     class TagAliasRegistry : public ITagAliasRegistry {
     public:
         virtual ~TagAliasRegistry();
-        virtual Option<TagAlias> find( std::string const& alias ) const;
-        virtual std::string expandAliases( std::string const& unexpandedTestSpec ) const;
+        virtual Option<TagAlias> find( std::string const& alias ) const override;
+        virtual std::string expandAliases( std::string const& unexpandedTestSpec ) const override;
         void add( char const* alias, char const* tag, SourceLineInfo const& lineInfo );
         static TagAliasRegistry& get();
 

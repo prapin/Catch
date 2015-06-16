@@ -22,7 +22,7 @@ namespace Catch {
             deleteAllValues( m_factories );
         }
 
-        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const {
+        virtual IStreamingReporter* create( std::string const& name, Ptr<IConfig> const& config ) const override {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return NULL;
@@ -33,7 +33,7 @@ namespace Catch {
             m_factories.insert( std::make_pair( name, factory ) );
         }
 
-        FactoryMap const& getFactories() const {
+        FactoryMap const& getFactories() const override {
             return m_factories;
         }
 

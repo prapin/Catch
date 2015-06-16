@@ -45,7 +45,7 @@ namespace Catch {
                 }
             }
             virtual ~NamePattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const {
+            virtual bool matches( TestCaseInfo const& testCase ) const override {
                 switch( m_wildcard ) {
                     case NoWildcard:
                         return m_name == toLower( testCase.name );
@@ -74,7 +74,7 @@ namespace Catch {
         public:
             TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
             virtual ~TagPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const {
+            virtual bool matches( TestCaseInfo const& testCase ) const override {
                 return testCase.lcaseTags.find( m_tag ) != testCase.lcaseTags.end();
             }
         private:
@@ -84,7 +84,7 @@ namespace Catch {
         public:
             ExcludedPattern( Ptr<Pattern> const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
             virtual ~ExcludedPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+            virtual bool matches( TestCaseInfo const& testCase ) const override { return !m_underlyingPattern->matches( testCase ); }
         private:
             Ptr<Pattern> m_underlyingPattern;
         };

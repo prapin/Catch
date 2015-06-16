@@ -114,10 +114,10 @@ namespace Matchers {
 
             virtual ~Equals();
 
-            virtual bool match( std::string const& expr ) const {
+            virtual bool match( std::string const& expr ) const override {
                 return m_str == expr;
             }
-            virtual std::string toString() const {
+            virtual std::string toString() const override {
                 return "equals: \"" + m_str + "\"";
             }
 
@@ -130,10 +130,10 @@ namespace Matchers {
 
             virtual ~Contains();
 
-            virtual bool match( std::string const& expr ) const {
+            virtual bool match( std::string const& expr ) const override {
                 return expr.find( m_substr ) != std::string::npos;
             }
-            virtual std::string toString() const {
+            virtual std::string toString() const override {
                 return "contains: \"" + m_substr + "\"";
             }
 
@@ -146,10 +146,10 @@ namespace Matchers {
 
             virtual ~StartsWith();
 
-            virtual bool match( std::string const& expr ) const {
+            virtual bool match( std::string const& expr ) const override {
                 return expr.find( m_substr ) == 0;
             }
-            virtual std::string toString() const {
+            virtual std::string toString() const override {
                 return "starts with: \"" + m_substr + "\"";
             }
 
@@ -162,10 +162,10 @@ namespace Matchers {
 
             virtual ~EndsWith();
 
-            virtual bool match( std::string const& expr ) const {
+            virtual bool match( std::string const& expr ) const override {
                 return expr.find( m_substr ) == expr.size() - m_substr.size();
             }
-            virtual std::string toString() const {
+            virtual std::string toString() const override {
                 return "ends with: \"" + m_substr + "\"";
             }
 

@@ -38,19 +38,19 @@ namespace Catch
         LegacyReporterAdapter( Ptr<IReporter> const& legacyReporter );
         virtual ~LegacyReporterAdapter();
 
-        virtual ReporterPreferences getPreferences() const;
-        virtual void noMatchingTestCases( std::string const& );
-        virtual void testRunStarting( TestRunInfo const& );
-        virtual void testGroupStarting( GroupInfo const& groupInfo );
-        virtual void testCaseStarting( TestCaseInfo const& testInfo );
-        virtual void sectionStarting( SectionInfo const& sectionInfo );
-        virtual void assertionStarting( AssertionInfo const& );
-        virtual bool assertionEnded( AssertionStats const& assertionStats );
-        virtual void sectionEnded( SectionStats const& sectionStats );
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats );
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats );
-        virtual void testRunEnded( TestRunStats const& testRunStats );
-        virtual void skipTest( TestCaseInfo const& );
+        virtual ReporterPreferences getPreferences() const override;
+        virtual void noMatchingTestCases( std::string const& ) override;
+        virtual void testRunStarting( TestRunInfo const& ) override;
+        virtual void testGroupStarting( GroupInfo const& groupInfo ) override;
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) override;
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) override;
+        virtual void assertionStarting( AssertionInfo const& ) override;
+        virtual bool assertionEnded( AssertionStats const& assertionStats ) override;
+        virtual void sectionEnded( SectionStats const& sectionStats ) override;
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override;
+        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override;
+        virtual void testRunEnded( TestRunStats const& testRunStats ) override;
+        virtual void skipTest( TestCaseInfo const& ) override;
 
     private:
         Ptr<IReporter> m_legacyReporter;

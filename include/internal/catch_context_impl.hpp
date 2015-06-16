@@ -22,34 +22,34 @@ namespace Catch {
         void operator=( Context const& );
 
     public: // IContext
-        virtual IResultCapture* getResultCapture() {
+        virtual IResultCapture* getResultCapture() override {
             return m_resultCapture;
         }
-        virtual IRunner* getRunner() {
+        virtual IRunner* getRunner() override {
             return m_runner;
         }
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) {
+        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) override {
             return getGeneratorsForCurrentTest()
             .getGeneratorInfo( fileInfo, totalSize )
             .getCurrentIndex();
         }
-        virtual bool advanceGeneratorsForCurrentTest() {
+        virtual bool advanceGeneratorsForCurrentTest() override {
             IGeneratorsForTest* generators = findGeneratorsForCurrentTest();
             return generators && generators->moveNext();
         }
 
-        virtual Ptr<IConfig const> getConfig() const {
+        virtual Ptr<IConfig const> getConfig() const override {
             return m_config;
         }
 
     public: // IMutableContext
-        virtual void setResultCapture( IResultCapture* resultCapture ) {
+        virtual void setResultCapture( IResultCapture* resultCapture ) override {
             m_resultCapture = resultCapture;
         }
-        virtual void setRunner( IRunner* runner ) {
+        virtual void setRunner( IRunner* runner ) override {
             m_runner = runner;
         }
-        virtual void setConfig( Ptr<IConfig const> const& config ) {
+        virtual void setConfig( Ptr<IConfig const> const& config ) override {
             m_config = config;
         }
 

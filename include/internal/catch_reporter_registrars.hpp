@@ -17,11 +17,11 @@ namespace Catch {
     class LegacyReporterRegistrar {
 
         class ReporterFactory : public IReporterFactory {
-            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const override {
                 return new LegacyReporterAdapter( new T( config ) );
             }
 
-            virtual std::string getDescription() const {
+            virtual std::string getDescription() const override {
                 return T::getDescription();
             }
         };
@@ -49,11 +49,11 @@ namespace Catch {
             // In fact, ideally, please contact me anyway to let me know you've hit this - as I have
             // no idea who is actually using custom reporters at all (possibly no-one!).
             // The new interface is designed to minimise exposure to interface changes in the future.
-            virtual IStreamingReporter* create( ReporterConfig const& config ) const {
+            virtual IStreamingReporter* create( ReporterConfig const& config ) const override {
                 return new T( config );
             }
 
-            virtual std::string getDescription() const {
+            virtual std::string getDescription() const override {
                 return T::getDescription();
             }
         };
