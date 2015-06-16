@@ -218,7 +218,25 @@ namespace Catch {
     };
 
     bool Session::alreadyInstantiated = false;
-
 } // end namespace Catch
+
+
+// prapin additions
+static char errorBuffer[1000];
+void CatchAssertion(bool condition, PSTRING file, int line, PSTRING cond_text)
+{
+    if(condition)
+        return;
+    if(Catch::ExpectingThrows::counter == 0)
+        CATCH_BREAK_INTO_DEBUGGER();
+    sprintf(errorBuffer, "Assertion failed at %s:%d (%s)", file, line, cond_text);
+    throw errorBuffer;
+}
+namespace Catch {
+    int ExpectingThrows::counter;
+    U32 ExpectsDebugsError::capturingMask;
+    U16 ExpectsDebugsError::counters[DebugSeveritiesCount];
+    random_t random;
+}
 
 #endif // TWOBLUECUBES_CATCH_RUNNER_HPP_INCLUDED
