@@ -37,6 +37,7 @@
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 #include "internal/catch_matchers.hpp"
+namespace Catch { extern random_t random; } // prapin
 #include "internal/catch_compiler_capabilities.h"
 #include "internal/catch_interfaces_tag_alias_registry.h"
 #include "internal/catch_expecting_throws.hpp" // prapin
