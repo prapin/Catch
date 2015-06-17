@@ -24,6 +24,9 @@
 
 #include <set>
 #include <string>
+#include <chrono>
+#include "Utility/BaseThreadManager.h"
+#include "Debug/DebugManagerStdout.h"
 
 namespace Catch {
 
@@ -256,20 +259,68 @@ namespace Catch {
             Counts prevAssertions = m_totals.assertions;
             double duration = 0;
             try {
+                // Function modified to better match Alf memory model. PRapin
+                baseThreadManager->stopAll();
+                baseSingletonsManager.releaseAll();
+                BaseObject::recentObjects->clear();
+                S32 old_counts[2] = {BaseObject::constructorCount, BaseObject::destructorCount} ;
+                
+               
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
+                {
+                    BaseAutorelease a;
+                    U32 seed = m_config->rngSeed();
+                    if(seed == 0)
+                    {
+                        S64 t = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+                        seed = (U32)(t ^ (t >> 32));
+                    }
+                    random.seed(seed);
+                    srand(seed);
+                    INTERNAL_CATCH_INFO( "Random generator seeded with value " << seed, "INFO" );
 
-                Timer timer;
-                timer.start();
-                if( m_reporter->getPreferences().shouldRedirectStdOut ) {
-                    StreamRedirect coutRedir( Catch::cout(), redirectedCout );
-                    StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
-                    invokeActiveTestCase();
+                    
+                    Timer timer;
+                    timer.start();
+                    if( m_reporter->getPreferences().shouldRedirectStdOut ) {
+                        StreamRedirect coutRedir( Catch::cout(), redirectedCout );
+                        StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
+                        invokeActiveTestCase();
+                    }
+                    else {
+                        invokeActiveTestCase();
+                    }
+                    duration = timer.getElapsedSeconds();
                 }
-                else {
-                    invokeActiveTestCase();
+                
+                baseThreadManager->stopAll();
+                baseSingletonsManager.releaseAll();
+                
+                std::unordered_set<BaseObject*> leakingObjects = *BaseObject::recentObjects;
+                for(BaseObject* obj : leakingObjects)
+                {
+                    INTERNAL_CATCH_MSG( Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure,
+                                       "WARN", "Leaking object #" << obj->stamp_id << " of type " << obj->getClass() << " ("
+                                       << typeid(*obj).name() << ") " << " retain=" << obj->getRetainCount() );
+                    {
+                        BaseAutorelease a;
+                        BaseString* description = obj->toString();
+                        if(description->length() > 200)
+                            description = description->substring(0, 200)->stringByAppendingString(STR("\n[...]"));
+                        printf("%s\n\n",description->cString());
+                    }
                 }
-                duration = timer.getElapsedSeconds();
+                S32 new_counts[2] = {BaseObject::constructorCount, BaseObject::destructorCount} ;
+                ptrdiff_t diff = new_counts[0] - new_counts[1] - old_counts[0] + old_counts[1];
+                
+                if(diff)
+                {
+                    INTERNAL_CATCH_MSG( Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::Normal, "FAIL",
+                                       "Memory leaks detected: " << diff << " objects\nSet BaseObject::stampIDToBreak to find the leaking object");
+                }
+                
+
             }
             catch( TestFailureException& ) {
                 // This just means the test was aborted due to failure

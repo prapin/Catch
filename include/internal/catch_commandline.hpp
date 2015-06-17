@@ -42,7 +42,7 @@ namespace Catch {
     }
     inline void setRngSeed( ConfigData& config, std::string const& seed ) {
         if( seed == "time" ) {
-            config.rngSeed = static_cast<unsigned int>( std::time(0) );
+            config.rngSeed = 0;
         }
         else {
             std::stringstream ss;

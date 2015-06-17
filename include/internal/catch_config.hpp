@@ -39,7 +39,7 @@ namespace Catch {
             showInvisibles( false ),
             forceColour( false ),
             abortAfter( -1 ),
-            rngSeed( 0 ),
+            rngSeed( 1 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
             showDurations( ShowDurations::DefaultForReporter ),
@@ -70,6 +70,8 @@ namespace Catch {
         std::string outputFilename;
         std::string name;
         std::string processName;
+        std::string debugLevel;
+        std::string md5DatabaseName;
 
         std::vector<std::string> testsOrTags;
     };

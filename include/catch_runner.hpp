@@ -18,6 +18,9 @@
 #include <fstream>
 #include <stdlib.h>
 #include <limits>
+#include "LastGitCommit.h"
+#include "Cryptography/BaseMD5.h"
+#include "Debug/DebugManagerCatch.h"
 
 namespace Catch {
 
@@ -113,16 +116,24 @@ namespace Catch {
         struct OnUnusedOptions { enum DoWhat { Ignore, Fail }; };
 
         Session()
-        : m_cli( makeCommandLineParser() ) {
+        : m_cli( makeCommandLineParser() ),
+        debug((new(AUTORELEASE)DebugManagerCatch)->setLevel(DebugSeverity::info)->setFormat("%m"))
+        {
             if( alreadyInstantiated ) {
                 std::string msg = "Only one instance of Catch::Session can ever be used";
                 Catch::cerr() << msg << std::endl;
                 throw std::logic_error( msg );
             }
             alreadyInstantiated = true;
+            BaseObject::recentObjectsMutex = new std::mutex;
+            BaseObject::recentObjects = new std::unordered_set<BaseObject*>;
         }
         ~Session() {
             Catch::cleanUp();
+            delete BaseObject::recentObjects;
+            BaseObject::recentObjects = NULL;
+            delete BaseObject::recentObjectsMutex;
+            BaseObject::recentObjectsMutex = NULL;
         }
 
         void showHelp( std::string const& processName ) {
@@ -179,7 +190,13 @@ namespace Catch {
             {
                 config(); // Force config to be constructed
 
-                std::srand( m_configData.rngSeed );
+                static const PSTRING version = "GITGLOBALID=" GIT_LAST_COMMIT_ABBRHASH;
+                BaseAutorelease a;
+                printf("Git ID: %s\n", version+12);
+                if(!m_configData.debugLevel.empty())
+                    (new(AUTORELEASE)DebugManagerStdout)->setFilter(m_configData.debugLevel.c_str());
+                if(m_configData.md5DatabaseName.length())
+                    BaseMD5::testMD5DatabaseName = m_configData.md5DatabaseName.c_str();
 
                 Runner runner( m_config );
 
@@ -215,6 +232,7 @@ namespace Catch {
         std::vector<Clara::Parser::Token> m_unusedTokens;
         ConfigData m_configData;
         Ptr<Config> m_config;
+        SP<DebugManager> debug;
     };
 
     bool Session::alreadyInstantiated = false;
