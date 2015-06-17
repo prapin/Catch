@@ -145,7 +145,7 @@ namespace Catch {
             .describe( "which test or tests to use" )
             .bind( &addTestOrTags, "test name, pattern or tags" );
 
-        cli["-d"]["--durations"]
+        cli["-D"]["--durations"]
             .describe( "show test durations" )
             .bind( &setShowDurations, "yes/no" );
 
@@ -166,13 +166,23 @@ namespace Catch {
             .describe( "test case order (defaults to decl)" )
             .bind( &setOrder, "decl|lex|rand" );
 
-        cli["--rng-seed"]
+        cli["-R"]["--rng-seed"]
             .describe( "set a specific seed for random numbers" )
             .bind( &setRngSeed, "'time'|number" );
 
         cli["--force-colour"]
             .describe( "force colourised output" )
             .bind( &ConfigData::forceColour );
+        
+        // prapin
+        cli["-d"]["--debug"]
+            .describe( "debug message display level" )
+            .bind( &ConfigData::debugLevel, "debug level" );
+
+        cli["-m"]["--md5"]
+            .describe( "database of MD5 key/value pairs" )
+            .bind( &ConfigData::md5DatabaseName, "filename" );
+        
 
         return cli;
     }
