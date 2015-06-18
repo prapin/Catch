@@ -22,6 +22,7 @@ namespace Catch {
         void operator=( Context const& );
 
     public: // IContext
+		~Context() { for (auto generator : createdGenerators) delete generator; }
         virtual IResultCapture* getResultCapture() override {
             return m_resultCapture;
         }
@@ -71,6 +72,7 @@ namespace Catch {
             if( !generators ) {
                 std::string testName = getResultCapture()->getCurrentTestName();
                 generators = createGeneratorsForTest();
+				createdGenerators.push_back(generators);
                 m_generatorsByTestName.insert( std::make_pair( testName, generators ) );
             }
             return *generators;
@@ -81,6 +83,7 @@ namespace Catch {
         IRunner* m_runner;
         IResultCapture* m_resultCapture;
         std::map<std::string, IGeneratorsForTest*> m_generatorsByTestName;
+		std::vector<IGeneratorsForTest*> createdGenerators;
     };
 
     namespace {
