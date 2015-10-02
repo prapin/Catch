@@ -192,7 +192,7 @@ namespace Catch {
                 if(!m_configData.debugLevel.empty())
                     (new(AUTORELEASE)DebugManagerStdout)->setFilter(m_configData.debugLevel.c_str());
                 if(m_configData.md5DatabaseName.length())
-                    BaseMD5::testMD5DatabaseName = m_configData.md5DatabaseName.c_str();
+                    BaseMD5::openDatabase(m_configData.md5DatabaseName.c_str());
 
                 Runner runner( m_config );
 
