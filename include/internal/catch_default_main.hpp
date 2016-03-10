@@ -11,7 +11,7 @@
 #ifndef __OBJC__
 
 // Standard C/C++ main entry point
-int main (int argc, char * const argv[]) {
+int main (int argc, char * argv[]) {
     // prapin
 #ifdef _MSC_VER
     _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_ALLOC_MEM_DF);
