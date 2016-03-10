@@ -204,8 +204,6 @@ namespace Catch { extern random_t random; } // prapin
 #define THEN( desc )     SECTION( "    Then: " desc, "" )
 #define AND_THEN( desc ) SECTION( "     And: " desc, "" )
 
-using Catch::Detail::Approx;
-
 #include "internal/catch_reenable_warnings.h"
 
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

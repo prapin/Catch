@@ -13,79 +13,54 @@
 #include <cmath>
 #include <limits>
 
-namespace Catch {
-namespace Detail {
 
-    class Approx {
-    public:
-        explicit Approx ( double value )
-        :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
-            m_scale( 1.0 ),
-            m_value( value )
-        {}
+template <class T>
+class ApproxT {
+public:
+    static_assert(sizeof(T) == sizeof(double), "Do not use Approx for integers");
+    ApproxT ( T value, double epsilon, T scale )
+    :   m_epsilon( epsilon ), m_scale( scale ), m_value( value ) {}
 
-        Approx( Approx const& other )
-        :   m_epsilon( other.m_epsilon ),
-            m_scale( other.m_scale ),
-            m_value( other.m_value )
-        {}
+    ApproxT (double epsilon=std::numeric_limits<float>::epsilon()*100, T scale = T(1.0) )
+    :   m_epsilon( epsilon ), m_scale( scale ), m_value( T(0.0) ) {}
+    
+    ApproxT operator()( T value ) {
+        ApproxT approx( value, m_epsilon, m_scale );
+        return approx;
+    }
+    
+    friend bool operator == ( T lhs, ApproxT const& rhs ) {
+        // Thanks to Richard Harris for his help refining this formula
+        return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + max( fabs(lhs), fabs(rhs.m_value) ) );
+    }
+    
+    friend bool operator == ( ApproxT const& lhs, T rhs ) {
+        return operator==( rhs, lhs );
+    }
+    
+    friend bool operator != ( T lhs, ApproxT const& rhs ) {
+        return !operator==( lhs, rhs );
+    }
+    
+    friend bool operator != ( ApproxT const& lhs, T rhs ) {
+        return !operator==( rhs, lhs );
+    }
+    friend inline std::ostream& operator<< (std::ostream &out, ApproxT value) { out << value.m_value << " ± " << std::setprecision(2) << value.m_epsilon * (value.m_scale+value.m_value); return out; }
+    
+private:
+    double m_epsilon;
+    T m_scale;
+    T m_value;
+};
 
-        static Approx custom() {
-            return Approx( 0 );
-        }
-
-        Approx operator()( double value ) {
-            Approx approx( value );
-            approx.epsilon( m_epsilon );
-            approx.scale( m_scale );
-            return approx;
-        }
-
-        friend bool operator == ( double lhs, Approx const& rhs ) {
-            // Thanks to Richard Harris for his help refining this formula
-            return fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( fabs(lhs), fabs(rhs.m_value) ) );
-        }
-
-        friend bool operator == ( Approx const& lhs, double rhs ) {
-            return operator==( rhs, lhs );
-        }
-
-        friend bool operator != ( double lhs, Approx const& rhs ) {
-            return !operator==( lhs, rhs );
-        }
-
-        friend bool operator != ( Approx const& lhs, double rhs ) {
-            return !operator==( rhs, lhs );
-        }
-
-        Approx& epsilon( double newEpsilon ) {
-            m_epsilon = newEpsilon;
-            return *this;
-        }
-
-        Approx& scale( double newScale ) {
-            m_scale = newScale;
-            return *this;
-        }
-
-        std::string toString() const {
-            std::ostringstream oss;
-            oss << "Approx( " << Catch::toString( m_value ) << " )";
-            return oss.str();
-        }
-
-    private:
-        double m_epsilon;
-        double m_scale;
-        double m_value;
-    };
+template<class T> inline ApproxT<T> Approx(T value, double epsilon = std::numeric_limits<float>::epsilon()*100)
+{
+    return ApproxT<T>(value, epsilon, T(1.0));
+}
+template<class T1, class T> inline ApproxT<T> Approx(T1 value, double epsilon, T scale)
+{
+    return ApproxT<T>(value, epsilon, scale);
 }
 
-template<>
-inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
-    return value.toString();
-}
-
-} // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
