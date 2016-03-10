@@ -27,6 +27,7 @@
 #include <chrono>
 #include "Utility/BaseThreadManager.h"
 #include "Debug/DebugManagerStdout.h"
+#include "Utility/BaseRaiiCleaner.h"
 
 namespace Catch {
 
@@ -269,6 +270,8 @@ namespace Catch {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
                 {
+                    BaseRaiiCleaner cleanSingleton([]{ baseSingletonsManager.releaseAll(); });
+                    BaseRaiiCleaner cleanThread([]{ baseThreadManager->stopAll(); });
                     BaseAutorelease;
                     U32 seed = m_config->rngSeed();
                     if(seed == 0)
@@ -293,9 +296,6 @@ namespace Catch {
                     }
                     duration = timer.getElapsedSeconds();
                 }
-                
-                baseThreadManager->stopAll();
-                baseSingletonsManager.releaseAll();
                 
                 std::unordered_set<BaseObject*> leakingObjects = *BaseObject::recentObjects;
                 for(BaseObject* obj : leakingObjects)
