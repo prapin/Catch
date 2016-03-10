@@ -269,7 +269,7 @@ namespace Catch {
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 TestCaseTracker::Guard guard( *m_testCaseTracker );
                 {
-                    BaseAutorelease a;
+                    BaseAutorelease;
                     U32 seed = m_config->rngSeed();
                     if(seed == 0)
                     {
@@ -304,7 +304,7 @@ namespace Catch {
                                        "WARN", "Leaking object #" << obj->stamp_id << " of type " << obj->getClass() << " ("
                                        << typeid(*obj).name() << ") " << " retain=" << obj->getRetainCount() );
                     {
-                        BaseAutorelease a;
+                        BaseAutorelease;
                         BaseString* description = obj->toString();
                         if(description->length() > 200)
                             description = description->substring(0, 200)->stringByAppendingString(STR("\n[...]"));

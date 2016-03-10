@@ -187,7 +187,7 @@ namespace Catch {
                 config(); // Force config to be constructed
 
                 static const PSTRING version = "GITGLOBALID=" GIT_LAST_COMMIT_ABBRHASH;
-                BaseAutorelease a;
+                BaseAutorelease;
                 printf("Git ID: %s\n", version+12);
                 if(!m_configData.debugLevel.empty())
                     (new(AUTORELEASE)DebugManagerStdout)->setFilter(m_configData.debugLevel.c_str());
