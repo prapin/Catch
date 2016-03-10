@@ -128,7 +128,7 @@ namespace Catch {
 
         // IConfig interface
         virtual bool allowThrows() const override     { return !m_data.noThrow; }
-        virtual std::ostream& stream() const override { return m_os; }
+        virtual std::ostream& stream() const    { return m_stream->stream(); }
         virtual std::string name() const override     { return m_data.name.empty() ? m_data.processName : m_data.name; }
         virtual bool includeSuccessfulResults() const override { return m_data.showSuccessfulTests; }
         virtual bool warnAboutMissingAssertions() const override { return m_data.warnings & WarnAbout::NoAssertions; }

@@ -28,9 +28,6 @@
 #  endif
 #endif
 
-#if __cplusplus <= 199711L
-#  define override
-#endif
 
 #include "internal/catch_notimplemented_exception.h"
 #include "internal/catch_context.h"
