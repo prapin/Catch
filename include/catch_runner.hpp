@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <limits>
 #include "LastGitCommit.h"
-#include "Cryptography/BaseMD5.h"
+#include "Utility/UnitTestDatabase.h"
 #include "Debug/DebugManagerCatch.h"
 
 namespace Catch {
@@ -191,8 +191,7 @@ namespace Catch {
                 printf("Git ID: %s\n", version+12);
                 if(!m_configData.debugLevel.empty())
                     (new(AUTORELEASE)DebugManagerStdout)->setFilter(m_configData.debugLevel.c_str());
-                if(m_configData.md5DatabaseName.length())
-                    BaseMD5::openDatabase(m_configData.md5DatabaseName.c_str());
+                gUnitTestDatabase.New(m_configData.md5DatabaseName.c_str(), m_configData.processName.c_str());
 
                 Runner runner( m_config );
 

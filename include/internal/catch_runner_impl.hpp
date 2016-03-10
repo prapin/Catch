@@ -28,6 +28,7 @@
 #include "Utility/BaseThreadManager.h"
 #include "Debug/DebugManagerStdout.h"
 #include "Utility/BaseRaiiCleaner.h"
+#include "Utility/UnitTestDatabase.h"
 
 namespace Catch {
 
@@ -117,6 +118,8 @@ namespace Catch {
 
             Totals deltaTotals = m_totals.delta( prevTotals );
             m_totals.testCases += deltaTotals.testCases;
+            gUnitTestDatabase->addResultToDatabase(testInfo.name.c_str(), deltaTotals.testCases.allPassed());
+
             m_reporter->testCaseEnded( TestCaseStats(   testInfo,
                                                         deltaTotals,
                                                         redirectedCout,
