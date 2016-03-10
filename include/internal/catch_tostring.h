@@ -125,7 +125,7 @@ namespace Detail {
         template<typename T>
         static std::string convert( T const& _value ) {
             std::ostringstream oss;
-            oss << _value;
+            oss << std::setprecision(15) << _value;
             return oss.str();
         }
     };
