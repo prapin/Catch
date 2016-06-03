@@ -29,6 +29,7 @@
 #include "Debug/DebugManagerStdout.h"
 #include "Utility/BaseRaiiCleaner.h"
 #include "Utility/UnitTestDatabase.h"
+#include "Utility/StoragePaths.h"
 
 namespace Catch {
 
@@ -282,7 +283,7 @@ namespace Catch {
                 baseSingletonsManager.releaseAll();
                 BaseObject::recentObjects->clear();
                 S32 old_counts[2] = {BaseObject::constructorCount, BaseObject::destructorCount} ;
-                
+                StoragePaths::setCurrentUnitTestFileName(testCaseInfo.lineInfo.file);
                
                 m_lastAssertionInfo = AssertionInfo( "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal );
                 {
