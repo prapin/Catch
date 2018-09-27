@@ -17,7 +17,7 @@
 template <class T>
 class ApproxT {
 public:
-    static_assert(sizeof(T) == sizeof(double), "Do not use Approx for integers");
+    //static_assert(sizeof(T) == sizeof(double), "Do not use Approx for integers");
     ApproxT ( T value, double epsilon, T scale )
     :   m_epsilon( epsilon ), m_scale( scale ), m_value( value ) {}
 
