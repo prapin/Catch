@@ -124,15 +124,12 @@ namespace Catch {
                 throw std::logic_error( msg );
             }
             alreadyInstantiated = true;
-            BaseObject::recentObjectsMutex = new std::mutex;
             BaseObject::recentObjects = new std::unordered_set<BaseObject*>;
         }
         ~Session() {
             Catch::cleanUp();
             delete BaseObject::recentObjects;
             BaseObject::recentObjects = NULL;
-            delete BaseObject::recentObjectsMutex;
-            BaseObject::recentObjectsMutex = NULL;
         }
 
         void showHelp( std::string const& processName ) {
