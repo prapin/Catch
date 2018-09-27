@@ -18,8 +18,10 @@ int main (int argc, char * argv[]) {
     _crtBreakAlloc = -1; // If memory leak is detected, set here the allocation memory block to break on allocation
 #endif
     BaseAutorelease;
+    Time t = BaseDate::getTimestamp();
     int res = Catch::Session().run( argc, argv );
     baseSingletonsManager.isReleasingAll = true;
+    printf("Finished in %.3f s\n", (BaseDate::getTimestamp() - t).get());
     return res;
 }
 
