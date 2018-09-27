@@ -186,7 +186,7 @@ namespace Catch {
                 BaseAutorelease;
                 printf("Git ID: %s\n", version+12);
                 if(!m_configData.debugLevel.empty())
-                    (new(AUTORELEASE)DebugManagerStdout)->setFilter(m_configData.debugLevel.c_str());
+                    (new(AUTORELEASE)DebugManagerStdout)->setFilter(STR(m_configData.debugLevel.c_str(), -1));
                 gUnitTestDatabase.New(m_configData.md5DatabaseName.c_str(), m_configData.processName.c_str());
                 seedRng( *m_config ); // needed or not ??
 
