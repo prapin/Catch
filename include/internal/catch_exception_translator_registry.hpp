@@ -53,6 +53,10 @@ namespace Catch {
             catch( const char* msg ) {
                 return msg;
             }
+            catch(BaseException e) {
+                BaseAutorelease;
+                return e.asString()->cString();
+            }
             catch(...) {
                 return "Unknown exception";
             }
