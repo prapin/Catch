@@ -89,6 +89,9 @@ namespace Catch {
                 addTestOrTags( config, "\"" + line + "\"," );
         }
     }
+    // Using a global variable, to avoid problematic access on
+    bool useHTTPMockup;
+    inline void setHTTPMockup( ConfigData& config ) { useHTTPMockup = true; }
 
     inline Clara::CommandLine<ConfigData> makeCommandLineParser() {
 
@@ -207,6 +210,9 @@ namespace Catch {
             .describe( "database of MD5 key/value pairs" )
             .bind( &ConfigData::md5DatabaseName, "filename" );
         
+        cli["-M"]["--http-mockup"]
+        .describe( "mock up HTTP requests with local result" )
+        .bind( &setHTTPMockup );
 
         return cli;
     }
