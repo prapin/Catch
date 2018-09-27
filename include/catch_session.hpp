@@ -240,7 +240,7 @@ void CatchAssertion(bool condition, PSTRING file, int line, PSTRING cond_text)
 {
     if(condition)
         return;
-    if(Catch::ExpectingThrows::counter == 0)
+    if(Catch::ExpectingThrows::counter == 0 && Catch::getCurrentContext().getConfig()->shouldDebugBreak())
         CATCH_BREAK_INTO_DEBUGGER();
     sprintf(errorBuffer, "Assertion failed at %s:%d (%s)", file, line, cond_text);
     throw errorBuffer;
