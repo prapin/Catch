@@ -116,7 +116,7 @@ namespace Catch {
 
         Session()
         : m_cli( makeCommandLineParser() ),
-        debug((new(AUTORELEASE)DebugManagerCatch)->setLevel(DebugSeverity::info)->setFormat("%m"))
+        debug((new(AUTORELEASE)DebugManagerCatch)->setLevel(DebugSeverity::info)->setFormat("%m"_S))
         {
             if( alreadyInstantiated ) {
                 std::string msg = "Only one instance of Catch::Session can ever be used";
